@@ -92,6 +92,7 @@ jobs:
         run: |
           set -x
           cd openwrt
+          make deconfig
           echo "CONFIG_DEVEL=y" >> .config
           echo "CONFIG_KERNEL_DEBUG_INFO=y" >> .config
           echo "CONFIG_KERNEL_DEBUG_INFO_REDUCED=n" >> .config
