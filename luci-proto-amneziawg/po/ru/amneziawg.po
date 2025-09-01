@@ -73,6 +73,12 @@ msgstr "Размер мусорного заголовка пакета иниц
 msgid "Handshake response packet junk header size."
 msgstr "Размер мусорного заголовка пакета ответа на рукопожатие."
 
+msgid "Cookie reply packet junk header size."
+msgstr "Размер мусорного заголовка пакета ответа cookie."
+
+msgid "Transport packet junk header size."
+msgstr "Размер мусорного заголовка транспортного пакета."
+
 msgid "Handshake initiation packet type header."
 msgstr "Тип заголовка пакета инициации рукопожатия."
 
@@ -84,6 +90,33 @@ msgstr "Тип заголовка пакета под нагрузкой."
 
 msgid "Transport packet type header."
 msgstr "Тип заголовка транспортного пакета."
+
+msgid "First special junk packet signature."
+msgstr "Сигнатура первого special junk пакета."
+
+msgid "Second special junk packet signature."
+msgstr "Сигнатура второго special junk пакета."
+
+msgid "Third special junk packet signature."
+msgstr "Сигнатура третьего special junk пакета."
+
+msgid "Fourth special junk packet signature."
+msgstr "Сигнатура четвертого special junk пакета."
+
+msgid "Fifth special junk packet signature."
+msgstr "Сигнатура пятого special junk пакета."
+
+msgid "First controlled junk packet signature."
+msgstr "Сигнатура первого controlled junk пакета."
+
+msgid "Second controlled junk packet signature."
+msgstr "Сигнатура второго controlled junk пакета."
+
+msgid "Third controlled junk packet signature."
+msgstr "Сигнатура третьего controlled junk пакета."
+
+msgid "Special handshake timeout."
+msgstr "Таймаут special handshake."
 
 msgid "Enable / Disable peer. Restart amneziawg interface to apply changes."
 msgstr ""

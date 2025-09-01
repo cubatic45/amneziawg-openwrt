@@ -224,6 +224,16 @@ return network.registerProtocol('amneziawg', {
         o.datatype = 'uinteger';
         o.placeholder = '0';
         o.optional = true;
+		
+		o = s.taboption('amneziawg', form.Value, 'awg_s3', _('S3'), _('Cookie reply packet junk header size.'));
+        o.datatype = 'uinteger';
+        o.placeholder = '0';
+        o.optional = true;
+		
+		o = s.taboption('amneziawg', form.Value, 'awg_s4', _('S4'), _('Transport packet junk header size.'));
+        o.datatype = 'uinteger';
+        o.placeholder = '0';
+        o.optional = true;
 
         o = s.taboption('amneziawg', form.Value, 'awg_h1', _('H1'), _('Handshake initiation packet type header.'));
         o.datatype = 'uinteger';
@@ -243,6 +253,43 @@ return network.registerProtocol('amneziawg', {
         o = s.taboption('amneziawg', form.Value, 'awg_h4', _('H4'), _('Transport packet type header.'));
         o.datatype = 'uinteger';
         o.placeholder = '4';
+        o.optional = true;
+		
+		o = s.taboption('amneziawg', form.Value, 'awg_i1', _('I1'), _('First special junk packet signature.'));
+        o.datatype = 'string';
+        o.optional = true;
+		
+		o = s.taboption('amneziawg', form.Value, 'awg_i2', _('I2'), _('Second special junk packet signature.'));
+        o.datatype = 'string';
+        o.optional = true;
+		
+		o = s.taboption('amneziawg', form.Value, 'awg_i3', _('I3'), _('Third special junk packet signature.'));
+        o.datatype = 'string';
+        o.optional = true;
+		
+		o = s.taboption('amneziawg', form.Value, 'awg_i4', _('I4'), _('Fourth special junk packet signature.'));
+        o.datatype = 'string';
+        o.optional = true;
+		
+		o = s.taboption('amneziawg', form.Value, 'awg_i5', _('I5'), _('Fifth special junk packet signature.'));
+        o.datatype = 'string';
+        o.optional = true;
+		
+		o = s.taboption('amneziawg', form.Value, 'awg_j1', _('J1'), _('First controlled junk packet signature.'));
+        o.datatype = 'string';
+        o.optional = true;
+		
+		o = s.taboption('amneziawg', form.Value, 'awg_j2', _('J2'), _('Second controlled junk packet signature.'));
+        o.datatype = 'string';
+        o.optional = true;
+		
+		o = s.taboption('amneziawg', form.Value, 'awg_j3', _('J3'), _('Third controlled junk packet signature.'));
+        o.datatype = 'string';
+        o.optional = true;
+		
+		o = s.taboption('amneziawg', form.Value, 'awg_itime', _('ITIME'), _('Special handshake timeout.'));
+        o.datatype = 'uinteger';
+		o.placeholder = '0';
         o.optional = true;
 
 		// -- peers -----------------------------------------------------------------------
@@ -403,10 +450,21 @@ return network.registerProtocol('amneziawg', {
 					s.getOption('awg_jmax').getUIElement(s.section).setValue(config.awg_jmax);
 					s.getOption('awg_s1').getUIElement(s.section).setValue(config.awg_s1);
 					s.getOption('awg_s2').getUIElement(s.section).setValue(config.awg_s2);
+					s.getOption('awg_s3').getUIElement(s.section).setValue(config.awg_s3);
+					s.getOption('awg_s4').getUIElement(s.section).setValue(config.awg_s4);
 					s.getOption('awg_h1').getUIElement(s.section).setValue(config.awg_h1);
 					s.getOption('awg_h2').getUIElement(s.section).setValue(config.awg_h2);
 					s.getOption('awg_h3').getUIElement(s.section).setValue(config.awg_h3);
 					s.getOption('awg_h4').getUIElement(s.section).setValue(config.awg_h4);
+					s.getOption('awg_i1').getUIElement(s.section).setValue(config.awg_i1);
+					s.getOption('awg_i2').getUIElement(s.section).setValue(config.awg_i2);
+					s.getOption('awg_i3').getUIElement(s.section).setValue(config.awg_i3);
+					s.getOption('awg_i4').getUIElement(s.section).setValue(config.awg_i4);
+					s.getOption('awg_i5').getUIElement(s.section).setValue(config.awg_i5);
+					s.getOption('awg_j1').getUIElement(s.section).setValue(config.awg_j1);
+					s.getOption('awg_j2').getUIElement(s.section).setValue(config.awg_j2);
+					s.getOption('awg_j3').getUIElement(s.section).setValue(config.awg_j3);
+					s.getOption('awg_itime').getUIElement(s.section).setValue(config.awg_itime);
 
 					if (config.interface_dns)
 						s.getOption('dns').getUIElement(s.section).setValue(config.interface_dns);
@@ -745,10 +803,21 @@ return network.registerProtocol('amneziawg', {
 				jmax = s.formvalue(s.section, 'awg_jmax'),
 				s1 = s.formvalue(s.section, 'awg_s1'),
 				s2 = s.formvalue(s.section, 'awg_s2'),
+				s3 = s.formvalue(s.section, 'awg_s3'),
+				s4 = s.formvalue(s.section, 'awg_s4'),
 				h1 = s.formvalue(s.section, 'awg_h1'),
 				h2 = s.formvalue(s.section, 'awg_h2'),
 				h3 = s.formvalue(s.section, 'awg_h3'),
 				h4 = s.formvalue(s.section, 'awg_h4'),
+				i1 = s.formvalue(s.section, 'awg_i1'),
+				i2 = s.formvalue(s.section, 'awg_i2'),
+				i3 = s.formvalue(s.section, 'awg_i3'),
+				i4 = s.formvalue(s.section, 'awg_i4'),
+				i5 = s.formvalue(s.section, 'awg_i5'),
+				j1 = s.formvalue(s.section, 'awg_j1'),
+				j2 = s.formvalue(s.section, 'awg_j2'),
+				j3 = s.formvalue(s.section, 'awg_j3'),
+				itime = s.formvalue(s.section, 'awg_itime'),
 			    prv = this.section.formvalue(section_id, 'private_key'),
 			    psk = this.section.formvalue(section_id, 'preshared_key'),
 			    eport = this.section.formvalue(section_id, 'endpoint_port'),
@@ -770,10 +839,21 @@ return network.registerProtocol('amneziawg', {
 				jmax ? 'Jmax = ' + jmax : '# Jmax not defined',
 				s1 ? 'S1 = ' + s1 : '# S1 not defined',
 				s2 ? 'S2 = ' + s2 : '# S2 not defined',
+				s3 ? 'S3 = ' + s3 : '# S3 not defined',
+				s4 ? 'S4 = ' + s4 : '# S4 not defined',
 				h1 ? 'H1 = ' + h1 : '# H1 not defined',
 				h2 ? 'H2 = ' + h2 : '# H2 not defined',
 				h3 ? 'H3 = ' + h3 : '# H3 not defined',
 				h4 ? 'H4 = ' + h4 : '# H4 not defined',
+				i1 ? 'I1 = ' + i1 : '# I1 not defined',
+				i2 ? 'I2 = ' + i2 : '# I2 not defined',
+				i3 ? 'I3 = ' + i3 : '# I3 not defined',
+				i4 ? 'I4 = ' + i4 : '# I4 not defined',
+				i5 ? 'I5 = ' + i5 : '# I5 not defined',
+				j1 ? 'J1 = ' + j1 : '# J1 not defined',
+				j2 ? 'J2 = ' + j2 : '# J2 not defined',
+				j3 ? 'J3 = ' + j3 : '# J3 not defined',
+				itime ? 'ITIME = ' + itime : '# ITIME not defined',
 				'',
 				'[Peer]',
 				'PublicKey = ' + pub,
