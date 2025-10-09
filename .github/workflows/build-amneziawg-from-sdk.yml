@@ -1,4 +1,4 @@
-name: NEW - Build AmneziaWG from SDK
+name: New - Build AmneziaWG from SDK
 
 on:
   workflow_dispatch:
@@ -8,6 +8,11 @@ on:
         type: string
         required: true
         default: "SNAPSHOT"
+      amneziawg_version:
+        description: "AmneziaWG version"
+        type: string
+        required: true
+        default: "master"
       openwrt_arch:
         description: "OpenWrt arch"
         type: string
@@ -64,6 +69,8 @@ jobs:
         sudo apt-get install -y python3-pyelftools python3-dev python3-setuptools swig
 
     - name: Download and prepare SDK
+      env:
+        compile_go: ${{ inputs.compile_go }}
       run: |
         set -e -x
         if [ "${{ inputs.openwrt_version }}" = "SNAPSHOT" ]; then
@@ -71,7 +78,7 @@ jobs:
         else
           base_url="https://downloads.openwrt.org/releases/${{ inputs.openwrt_version }}/targets/${{ inputs.openwrt_target }}/${{ inputs.openwrt_subtarget }}/"
         fi
-        sdk_url=$(curl -s "${base_url}" | grep -oP 'href="openwrt-sdk[^"]+\.tar\.zst"' | sed -e 's/href="//' -e 's/"$//' | head -n1)
+        sdk_url=$(curl -s "${base_url}" | grep -oP 'href="openwrt-sdk[^"]+\.tar\.(zst|xz)"' | sed -e 's/href="//' -e 's/"$//' | head -n1)
         if [[ -z "$sdk_url" ]]; then
           echo "SDK file not found."
           exit 1
@@ -79,7 +86,7 @@ jobs:
         curl -fsLO "$base_url$sdk_url"
         file_name=$(basename "$sdk_url")
         tar -xf "$file_name"
-        rm -f *.tar.zst
+        rm -f *.tar.zst *.tar.xz
         mv openwrt-sdk* openwrt
 
         echo "src-cpy awgopenwrt ../amneziawg" >> openwrt/feeds.conf.default
@@ -92,9 +99,11 @@ jobs:
         echo "CONFIG_PACKAGE_amneziawg-go=y" >> openwrt/.config
         echo "CONFIG_PACKAGE_amneziawg-tools=y" >> openwrt/.config
         echo "CONFIG_PACKAGE_luci-proto-amneziawg=y" >> openwrt/.config
-        rm -r openwrt/feeds/packages/lang/golang
-        cp -r packages/lang/golang openwrt/feeds/packages/lang
-        ./scripts/feeds install -a
+        if [ "${{ env.compile_go }}" = "true" ]; then
+          rm -r openwrt/feeds/packages/lang/golang
+          cp -r packages/lang/golang openwrt/feeds/packages/lang
+        fi
+        ./openwrt/scripts/feeds install -a
         make -C openwrt defconfig
   
     - name: Compile AmneziaWG packages
